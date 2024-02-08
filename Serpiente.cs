@@ -62,8 +62,6 @@ namespace LaBishaClases
                 case Movimiento.Abajo:
                     y++;
                     break;
-                //Como en el eje Y se mueve más rapido debido al tamaño de los pixéles,
-                //se ha aumentado el movimiento horizontal en 2
                 case Movimiento.Derecha:
                     x++;
                     break;
