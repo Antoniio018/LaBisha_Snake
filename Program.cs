@@ -63,14 +63,11 @@ namespace LaBishaClases
                         //Actualiza variables
                         if (serpiente[0].Direccion != Serpiente.Movimiento.Derecha)
                             serpiente[0].Izquierda();
-                        //labisha.Izquierda();
                     }
                     else if (tecla.Key == ConsoleKey.RightArrow)
                     {
                         //Mueve a la derecha
                         //Actualiza variables
-
-                        //labisha.Derecha();
                         if (serpiente[0].Direccion != Serpiente.Movimiento.Izquierda)
                             serpiente[0].Derecha();
                     }
@@ -78,8 +75,6 @@ namespace LaBishaClases
                     {
                         //Mueve hacia abajo
                         //Actualiza variables
-
-                        //labisha.Abajo();
                         if (serpiente[0].Direccion != Serpiente.Movimiento.Arriba)
                             serpiente[0].Abajo();
                     }
@@ -87,21 +82,18 @@ namespace LaBishaClases
                     {
                         //Mueve hacia arriba
                         //Actualiza variables
-
-                        //labisha.Arriba();
                         if (serpiente[0].Direccion != Serpiente.Movimiento.Abajo)
                             serpiente[0].Arriba();
                     }
                 }
                 ActualizarSerpiente(serpiente);
-
+                //Movemos la bisha en funcion a la última dirección seleccionada
                 serpiente[0].Avanzar();
 
-                //Movemos la bisha en funcion a la última dirección seleccionada
+                //Pinta la serpiente actualizada
                 foreach (Serpiente s in serpiente)
                 {
-                    //s.Avanzar();
-                    //Pinta-Borra el objeto a actualizar
+                    
                     Console.SetCursorPosition(s.X, s.Y);
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.Write(" ");
@@ -110,9 +102,9 @@ namespace LaBishaClases
                 //Tiempo de juego
                 Thread.Sleep(gameDelay);
 
+                //Borra la serpiente actualizada
                 foreach (Serpiente s in serpiente)
                 {
-                    //Pinta-Borra el objeto a actualizar
                     Console.SetCursorPosition(s.X, s.Y);
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.Write(" ");
@@ -122,6 +114,7 @@ namespace LaBishaClases
                     game = false;
             }
         }
+
         //Método para actualizar las variables de la serpiente
         public static void ActualizarSerpiente(List<Serpiente> serpiente)
         {
@@ -130,14 +123,7 @@ namespace LaBishaClases
                 serpiente[i].Direccion = serpiente[i - 1].Direccion;
                 serpiente[i].X = serpiente[i - 1].X;
                 serpiente[i].Y = serpiente[i - 1].Y;
-            }/*
-            for (int i = serpiente.Count - 1; i > 0; i--)
-            {
-                serpiente[i].Direccion = serpiente[i - 1].Direccion;
-                //serpiente[i].Avanzar();
             }
-            // La cabeza sigue la dirección actual del jugador
-            //serpiente[0].Avanzar();*/
         }
 
         //Método para comprobar si la serpiente colisiona
@@ -145,6 +131,7 @@ namespace LaBishaClases
         {
             return (y == limiteEndY || y == limiteStartY || x <= limiteStartX || x >= limiteEndX);
         }
+
         //Método para establecer los limites del tablero
         public static void SetLimits(int Width, int Suelo)
         {
