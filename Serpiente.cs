@@ -23,10 +23,12 @@ namespace LaBishaClases
 
         public int X
         {
+            set => x = value; 
             get => x;
         }
         public int Y
         {
+            set => y = value;
             get => y;
         }
 

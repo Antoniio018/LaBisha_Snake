@@ -94,6 +94,9 @@ namespace LaBishaClases
                     }
                 }
                 ActualizarSerpiente(serpiente);
+
+                serpiente[0].Avanzar();
+
                 //Movemos la bisha en funcion a la última dirección seleccionada
                 foreach (Serpiente s in serpiente)
                 {
@@ -122,33 +125,20 @@ namespace LaBishaClases
         //Método para actualizar las variables de la serpiente
         public static void ActualizarSerpiente(List<Serpiente> serpiente)
         {
-            
             for (int i = serpiente.Count - 1; i > 0; i--)
             {
                 serpiente[i].Direccion = serpiente[i - 1].Direccion;
-                serpiente[i].Avanzar();
-            }
-            // La cabeza sigue la dirección actual del jugador
-            serpiente[0].Avanzar();
-        }
-        /*
-        public static void ActualizarSerpiente(List<Serpiente> serpiente)
-        {
-            Serpiente.Movimiento direccion = serpiente[0].Direccion;
-            /*for(int i = 1; i < serpiente.Count; i++)
-            {
-                direccion = serpiente[i].Direccion;
-                serpiente[i].Actualizar(direccion, 0, 0);
-                
-            }*//*
+                serpiente[i].X = serpiente[i - 1].X;
+                serpiente[i].Y = serpiente[i - 1].Y;
+            }/*
             for (int i = serpiente.Count - 1; i > 0; i--)
             {
-                serpiente[i].Actualizar(serpiente[i - 1].Direccion, 0, 0);
+                serpiente[i].Direccion = serpiente[i - 1].Direccion;
+                //serpiente[i].Avanzar();
             }
-
-            //La cabeza sigue la dirección actual del jugador
-            serpiente[0].Actualizar(serpiente[0].Direccion, 0, 0);
-        }*/
+            // La cabeza sigue la dirección actual del jugador
+            //serpiente[0].Avanzar();*/
+        }
 
         //Método para comprobar si la serpiente colisiona
         public static bool Colision(int x, int y)
