@@ -16,7 +16,7 @@ namespace LaBishaClases
         private static int limiteEndY;
         static void Main(string[] args)
         {
-            int[,] escenario = new int[Suelo, Width];
+            int[,] escenario = new int[Width, Suelo];
             int frutas = 0;
 
 
@@ -39,14 +39,16 @@ namespace LaBishaClases
             //Declaramos la serpiente
             List<Serpiente>serpiente = new List<Serpiente>();
             
-            //Inicialzamos la cabeza de la serpiente en el centro del tablero 
+            //Inicializamos la cabeza de la serpiente en el centro del tablero 
             Serpiente labisha = new Serpiente(escenario, (Width / 2) - 1, Suelo/2);
             SetLimits(Width, Suelo);
             serpiente.Add(labisha);
-            serpiente.Add(new Serpiente(escenario, labisha.X - 1, labisha.Y));
-            serpiente.Add(new Serpiente(escenario, labisha.X - 2, labisha.Y));
+            //serpiente.Add(new Serpiente(escenario, labisha.X, labisha.Y));
+            //serpiente.Add(new Serpiente(escenario, labisha.X, labisha.Y));
 
-
+            //Inicializamos la fruta
+            Fruta fruta = new Fruta(escenario);
+            fruta.ReaparecerFruta();
             while (game)
             {
                 if (Console.KeyAvailable)
@@ -87,6 +89,10 @@ namespace LaBishaClases
                     }
                 }
                 ActualizarSerpiente(serpiente);
+
+                fruta.MostrarFruta();
+                
+
                 //Movemos la bisha en funcion a la última dirección seleccionada
                 serpiente[0].Avanzar();
 
@@ -99,6 +105,16 @@ namespace LaBishaClases
                     Console.Write(" ");
                 }
 
+                if (escenario[labisha.X, labisha.Y] == 2)
+                {
+                    fruta.Comida();
+                    serpiente.Add(new Serpiente(escenario, labisha.X, labisha.Y));
+                    frutas++;
+                    PintarMarcador(frutas);
+                    fruta.ReaparecerFruta();
+                }
+                    
+
                 //Tiempo de juego
                 Thread.Sleep(gameDelay);
 
@@ -109,7 +125,7 @@ namespace LaBishaClases
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.Write(" ");
                 }
-
+                
                 if (Colision(labisha.X, labisha.Y))
                     game = false;
             }
