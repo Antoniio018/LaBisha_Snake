@@ -43,8 +43,8 @@ namespace LaBishaClases
         //Método para generar coordenadas aleatorias dentro del tablero
         private void GenerarFruta()
         {   
-            x = random.Next(1, escenario.GetLength(0) - 2);
-            y = random.Next(2, escenario.GetLength(1) - 2);
+            x = random.Next(1, escenario.GetLength(0) - 3);
+            y = random.Next(2, escenario.GetLength(1) - 3);
             escenario[x, y] = 2;
         }
 

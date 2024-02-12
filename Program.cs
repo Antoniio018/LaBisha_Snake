@@ -16,7 +16,7 @@ namespace LaBishaClases
         private static int limiteEndY;
         static void Main(string[] args)
         {
-            int[,] escenario = new int[Width, Suelo];
+            int[,] escenario = new int[Width + 1, Suelo + 1];
             int frutas = 0;
 
 
@@ -103,7 +103,12 @@ namespace LaBishaClases
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.Write(" ");
                 }
-
+                if (Colision(serpiente[0].X, serpiente[0].Y, escenario))
+                {
+                    game = false;
+                    
+                }
+                    
                 if (escenario[labisha.X, labisha.Y] == 2)
                 {
                     fruta.Comida();
@@ -125,9 +130,9 @@ namespace LaBishaClases
                     Console.Write(" ");
                 }
                 
-                if (Colision(serpiente[0].X, serpiente[0].Y, escenario))
-                    game = false;
+
             }
+            PintarFinal(frutas);
         }
 
         //Método para actualizar las variables de la serpiente
@@ -203,6 +208,27 @@ namespace LaBishaClases
                 Console.SetCursorPosition(Width - 1, i);
                 Console.Write("|");
             }
+        }
+
+        //Método para pintar el resultado final al terminar la partida
+        private static void PintarFinal(int frutas)
+        {
+            for(int i = 0; i < Width; i++)
+            {
+                for(int j = 0; j <= Suelo; j++)
+                {
+                    Console.SetCursorPosition(i, j);
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(" ");
+                }
+            }
+            Console.SetCursorPosition((Width / 2) - 15, (Suelo / 2));
+            Console.BackgroundColor = ConsoleColor.Black;
+            //Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("La partida ha terminado...");
+            Console.SetCursorPosition((Width / 2) - 15, (Suelo / 2) + 1);
+            Console.Write("Con una puntuación de " + frutas + " Frutas comidas.");
+            Console.ReadKey();
         }
     }
 }

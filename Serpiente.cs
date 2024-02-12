@@ -55,7 +55,6 @@ namespace LaBishaClases
         }
         public void Avanzar()
         {
-            //escenario[x, y] = 0;
             switch (direccion)
             {
                 case Movimiento.Arriba:
@@ -72,13 +71,7 @@ namespace LaBishaClases
                     break;
                 case Movimiento.Parada:
                     break;
-            }/*
-            if (escenario[x, y] == 1)
-            {
-                vida = false;
-                return;
             }
-            escenario[x, y] = 1;*/
         }
         public void Actualizar(Movimiento direccion, int x, int y)
         {
