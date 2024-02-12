@@ -43,8 +43,6 @@ namespace LaBishaClases
             Serpiente labisha = new Serpiente(escenario, (Width / 2) - 1, Suelo/2);
             SetLimits(Width, Suelo);
             serpiente.Add(labisha);
-            //serpiente.Add(new Serpiente(escenario, labisha.X, labisha.Y));
-            //serpiente.Add(new Serpiente(escenario, labisha.X, labisha.Y));
 
             //Inicializamos la fruta
             Fruta fruta = new Fruta(escenario);
@@ -88,7 +86,8 @@ namespace LaBishaClases
                             serpiente[0].Arriba();
                     }
                 }
-                ActualizarSerpiente(serpiente);
+                ActualizarSerpiente(serpiente, escenario);
+                ActualizarMatriz(serpiente, escenario);
 
                 fruta.MostrarFruta();
                 
@@ -126,26 +125,36 @@ namespace LaBishaClases
                     Console.Write(" ");
                 }
                 
-                if (Colision(labisha.X, labisha.Y))
+                if (Colision(serpiente[0].X, serpiente[0].Y, escenario))
                     game = false;
             }
         }
 
         //Método para actualizar las variables de la serpiente
-        public static void ActualizarSerpiente(List<Serpiente> serpiente)
+        public static void ActualizarSerpiente(List<Serpiente> serpiente, int[,] escenario)
         {
             for (int i = serpiente.Count - 1; i > 0; i--)
             {
+                escenario[serpiente[i].X, serpiente[i].Y] = 0;
                 serpiente[i].Direccion = serpiente[i - 1].Direccion;
                 serpiente[i].X = serpiente[i - 1].X;
                 serpiente[i].Y = serpiente[i - 1].Y;
             }
         }
 
-        //Método para comprobar si la serpiente colisiona
-        public static bool Colision(int x, int y)
+        //Método para actualizar la matriz con el cuerpo de la serpiente
+        public static void ActualizarMatriz(List<Serpiente> serpiente, int[,] escenario)
         {
-            return (y == limiteEndY || y == limiteStartY || x <= limiteStartX || x >= limiteEndX);
+            for (int i = 1; i < serpiente.Count; i++)
+            {
+                escenario[serpiente[i].X, serpiente[i].Y] = 1;
+            }
+        }
+
+        //Método para comprobar si la serpiente colisiona
+        public static bool Colision(int x, int y, int[,] escenario)
+        {
+            return (y == limiteEndY || y == limiteStartY || x <= limiteStartX || x >= limiteEndX || escenario[x,y] == 1);
         }
 
         //Método para establecer los limites del tablero
