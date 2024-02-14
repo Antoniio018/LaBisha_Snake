@@ -14,10 +14,11 @@ namespace LaBishaClases
         private static int limiteEndX;
         private static int limiteStartY;
         private static int limiteEndY;
+        private static int frutas = 0;
         static void Main(string[] args)
         {
             int[,] escenario = new int[Width + 1, Suelo + 1];
-            int frutas = 0;
+            
 
 
             //Crea un objeto para lectura de teclado
@@ -31,10 +32,13 @@ namespace LaBishaClases
             Console.Title = "La Bisha";
 
             //Dibujamos el marcador
-            PintarMarcador(frutas);
+            PintarMarcador();
 
             //Dibujamos la escena
             PintarEscena(Suelo);
+
+            //Dibujamos la puntuación de las frutas
+            PintarLeyenda();
 
             //Declaramos la serpiente
             List<Serpiente>serpiente = new List<Serpiente>();
@@ -46,7 +50,7 @@ namespace LaBishaClases
 
             //Inicializamos la fruta
             Fruta fruta = new Fruta(escenario);
-            fruta.ReaparecerFruta();
+            //fruta.ReaparecerFruta();
             while (game)
             {
                 if (Console.KeyAvailable)
@@ -89,7 +93,7 @@ namespace LaBishaClases
                 ActualizarSerpiente(serpiente, escenario);
                 ActualizarMatriz(serpiente, escenario);
 
-                fruta.MostrarFruta();
+                //fruta.MostrarFruta();
                 
 
                 //Movemos la bisha en funcion a la última dirección seleccionada
@@ -103,18 +107,18 @@ namespace LaBishaClases
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.Write(" ");
                 }
+
+                //Al cumplirse esta condición la serpiente ha chocado contra una pared o contra sí misma
                 if (Colision(serpiente[0].X, serpiente[0].Y, escenario))
                 {
                     game = false;
-                    
                 }
                     
+                //Al cumplirse esta condición significa que se ha comido una fruta
                 if (escenario[labisha.X, labisha.Y] == 2)
                 {
-                    fruta.Comida();
-                    serpiente.Add(new Serpiente(escenario, labisha.X, labisha.Y));
-                    frutas++;
-                    PintarMarcador(frutas);
+                    DigerirFruta(escenario,serpiente,fruta.Comida());
+                    PintarMarcador();
                     fruta.ReaparecerFruta();
                 }
                     
@@ -132,7 +136,32 @@ namespace LaBishaClases
                 
 
             }
-            PintarFinal(frutas);
+            PintarFinal();
+        }
+        //Método para hacer crecer o decrecer la serpiente en función de la fruta comida
+        public static void DigerirFruta(int [,] escenario, List<Serpiente> serpiente, int tipoFruta)
+        {
+            switch(tipoFruta)
+            {
+                case Fruta.Blue:
+                    frutas += Fruta.Blue;
+                    for (int i = 0; i < Fruta.Blue; i++)
+                        serpiente.Add(new Serpiente(escenario, serpiente[serpiente.Count - 1].X, serpiente[serpiente.Count - 1].Y));
+                    
+                    break;
+                case Fruta.Red: 
+                    break;
+                case Fruta.Yellow:
+                    frutas += Fruta.Yellow;
+                    for (int i = 0; i < Fruta.Yellow; i++)
+                        serpiente.Add(new Serpiente(escenario, serpiente[serpiente.Count - 1].X, serpiente[serpiente.Count - 1].Y));
+                    break;
+                default:
+                    frutas += Fruta.Green;
+                    for (int i = 0; i < Fruta.Green; i++)
+                        serpiente.Add(new Serpiente(escenario, serpiente[serpiente.Count - 1].X, serpiente[serpiente.Count - 1].Y));
+                    break;
+            }
         }
 
         //Método para actualizar las variables de la serpiente
@@ -172,13 +201,37 @@ namespace LaBishaClases
         }
 
         //Método para pintar el marcador de frutas comidas
-        private static void PintarMarcador(int frutas)
+        private static void PintarMarcador()
         {
-            Console.SetCursorPosition((Width / 2) - 5, 0);
+            Console.SetCursorPosition((Width / 2) - 20, 0);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Write($"SCORE -> {frutas}");
         }
 
+        //Método para pintar la leyenda de las frutas
+        private static void PintarLeyenda()
+        {
+            Console.SetCursorPosition((Width / 2) + 5, 0);
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write("-> 1\t");     
+            
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write("-> 2\t");  
+            
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write("-> 4\t");   
+            
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write("-> -1\t");
+        }
         //Método para pintar la escena
         private static void PintarEscena(int suelo)
         {
@@ -211,7 +264,7 @@ namespace LaBishaClases
         }
 
         //Método para pintar el resultado final al terminar la partida
-        private static void PintarFinal(int frutas)
+        private static void PintarFinal()
         {
             for(int i = 0; i < Width; i++)
             {
@@ -225,9 +278,9 @@ namespace LaBishaClases
             Console.SetCursorPosition((Width / 2) - 15, (Suelo / 2));
             Console.BackgroundColor = ConsoleColor.Black;
             //Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("La partida ha terminado...");
+            Console.Write("La partida ha terminado...   ");
             Console.SetCursorPosition((Width / 2) - 15, (Suelo / 2) + 1);
-            Console.Write("Con una puntuación de " + frutas + " Frutas comidas.");
+            Console.Write("Con una puntuación total de " + frutas);
             Console.ReadKey();
         }
     }
