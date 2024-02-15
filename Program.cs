@@ -8,7 +8,8 @@ namespace LaBishaClases
     internal class Program
     {
         private static int gameDelay = 100;
-        private static int Width = Console.BufferWidth;
+        //private static int Width = Console.BufferWidth;
+        private static int Width = 100;
         private static int Suelo = 25;
         private static int limiteStartX;
         private static int limiteEndX;
@@ -51,6 +52,8 @@ namespace LaBishaClases
             //Inicializamos la fruta
             Fruta fruta = new Fruta(escenario);
             //fruta.ReaparecerFruta();
+            //Thread subprocesoFruta = new Thread(fruta.ReaparecerFruta);
+            //subprocesoFruta.Start();
             while (game)
             {
                 if (Console.KeyAvailable)
@@ -92,17 +95,16 @@ namespace LaBishaClases
                 }
                 ActualizarSerpiente(serpiente, escenario);
                 ActualizarMatriz(serpiente, escenario);
-
-                //fruta.MostrarFruta();
                 
+                //fruta.MostrarFruta();
+
 
                 //Movemos la bisha en funcion a la última dirección seleccionada
                 serpiente[0].Avanzar();
 
                 //Pinta la serpiente actualizada
                 foreach (Serpiente s in serpiente)
-                {
-                    
+                {    
                     Console.SetCursorPosition(s.X, s.Y);
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.Write(" ");
@@ -111,6 +113,7 @@ namespace LaBishaClases
                 //Al cumplirse esta condición la serpiente ha chocado contra una pared o contra sí misma
                 if (Colision(serpiente[0].X, serpiente[0].Y, escenario))
                 {
+                    fruta.InterrumpirTemporizador();
                     game = false;
                 }
                     
@@ -119,9 +122,11 @@ namespace LaBishaClases
                 {
                     DigerirFruta(escenario,serpiente,fruta.Comida());
                     PintarMarcador();
-                    fruta.ReaparecerFruta();
-                }
-                    
+                    fruta.InterrumpirTemporizador();
+                    //subprocesoFruta.Interrupt();
+                    //subprocesoFruta.Start();
+                    //fruta.ReaparecerFruta();
+                }  
 
                 //Tiempo de juego
                 Thread.Sleep(gameDelay);
@@ -133,11 +138,10 @@ namespace LaBishaClases
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.Write(" ");
                 }
-                
-
             }
             PintarFinal();
         }
+
         //Método para hacer crecer o decrecer la serpiente en función de la fruta comida
         public static void DigerirFruta(int [,] escenario, List<Serpiente> serpiente, int tipoFruta)
         {
@@ -147,9 +151,21 @@ namespace LaBishaClases
                     frutas += Fruta.Blue;
                     for (int i = 0; i < Fruta.Blue; i++)
                         serpiente.Add(new Serpiente(escenario, serpiente[serpiente.Count - 1].X, serpiente[serpiente.Count - 1].Y));
-                    
                     break;
-                case Fruta.Red: 
+                case Fruta.Red:
+                    frutas += Fruta.Red;
+                    if (serpiente.Count > 1)
+                    {
+                        Serpiente s = serpiente[serpiente.Count - 1];
+                        
+                        Console.SetCursorPosition(s.X, s.Y);
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        serpiente.RemoveAt(serpiente.Count - 1);
+
+                    }
+                        
                     break;
                 case Fruta.Yellow:
                     frutas += Fruta.Yellow;
@@ -205,7 +221,7 @@ namespace LaBishaClases
         {
             Console.SetCursorPosition((Width / 2) - 20, 0);
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write($"SCORE -> {frutas}");
+            Console.Write($"SCORE -> {frutas} ");
         }
 
         //Método para pintar la leyenda de las frutas
@@ -232,6 +248,7 @@ namespace LaBishaClases
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Write("-> -1\t");
         }
+
         //Método para pintar la escena
         private static void PintarEscena(int suelo)
         {
@@ -250,13 +267,13 @@ namespace LaBishaClases
             }
 
             //Pintar pared izquierda
-            for (int i = 2; i <= suelo; i++)
+            for (int i = 2; i < suelo; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write("|");
             }
             //Pintar pared derecha
-            for (int i = 2; i <= suelo; i++)
+            for (int i = 2; i < suelo; i++)
             {
                 Console.SetCursorPosition(Width - 1, i);
                 Console.Write("|");

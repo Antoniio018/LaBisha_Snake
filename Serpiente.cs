@@ -13,13 +13,10 @@ namespace LaBishaClases
             Parada
         }
 
-        protected int y;
-        protected int x;
-
-        protected Movimiento direccion;
-        protected bool vida;
-
-        protected int[,] escenario;
+        private int y;
+        private int x;
+        private Movimiento direccion;
+        private int[,] escenario;
 
         public int X
         {
@@ -38,21 +35,16 @@ namespace LaBishaClases
             set => direccion = value;
         }
 
-
+        //Constructor
         public Serpiente(int[,] escenario, int x, int y)
         {
-            vida = true;
             direccion = Movimiento.Parada;
             this.x = x;
             this.y = y;
             this.escenario = escenario;
         }
 
-
-        public bool IsDead()
-        {
-            return !vida;
-        }
+        //Método para avanzar la serpiente en función a su dirección
         public void Avanzar()
         {
             switch (direccion)
@@ -73,10 +65,7 @@ namespace LaBishaClases
                     break;
             }
         }
-        public void Actualizar(Movimiento direccion, int x, int y)
-        {
-            this.direccion = direccion;
-        }
+
         public void Izquierda()
         {
             direccion = Movimiento.Izquierda;
