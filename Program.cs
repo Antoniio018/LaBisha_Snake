@@ -18,9 +18,8 @@ namespace LaBishaClases
         private static int frutas = 0;
         static void Main(string[] args)
         {
+            //Matriz del escenario de la partida
             int[,] escenario = new int[Width + 1, Suelo + 1];
-            
-
 
             //Crea un objeto para lectura de teclado
             ConsoleKeyInfo tecla = new ConsoleKeyInfo();
@@ -51,9 +50,7 @@ namespace LaBishaClases
 
             //Inicializamos la fruta
             Fruta fruta = new Fruta(escenario);
-            //fruta.ReaparecerFruta();
-            //Thread subprocesoFruta = new Thread(fruta.ReaparecerFruta);
-            //subprocesoFruta.Start();
+
             while (game)
             {
                 if (Console.KeyAvailable)
@@ -93,12 +90,10 @@ namespace LaBishaClases
                             serpiente[0].Arriba();
                     }
                 }
+                //Actualizamos la serpiente y la matriz escenario
                 ActualizarSerpiente(serpiente, escenario);
                 ActualizarMatriz(serpiente, escenario);
                 
-                //fruta.MostrarFruta();
-
-
                 //Movemos la bisha en funcion a la última dirección seleccionada
                 serpiente[0].Avanzar();
 
@@ -123,9 +118,6 @@ namespace LaBishaClases
                     DigerirFruta(escenario,serpiente,fruta.Comida());
                     PintarMarcador();
                     fruta.InterrumpirTemporizador();
-                    //subprocesoFruta.Interrupt();
-                    //subprocesoFruta.Start();
-                    //fruta.ReaparecerFruta();
                 }  
 
                 //Tiempo de juego
@@ -157,15 +149,13 @@ namespace LaBishaClases
                     if (serpiente.Count > 1)
                     {
                         Serpiente s = serpiente[serpiente.Count - 1];
-                        
+
                         Console.SetCursorPosition(s.X, s.Y);
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.Write(" ");
 
                         serpiente.RemoveAt(serpiente.Count - 1);
-
-                    }
-                        
+                    }  
                     break;
                 case Fruta.Yellow:
                     frutas += Fruta.Yellow;
@@ -294,7 +284,6 @@ namespace LaBishaClases
             }
             Console.SetCursorPosition((Width / 2) - 15, (Suelo / 2));
             Console.BackgroundColor = ConsoleColor.Black;
-            //Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("La partida ha terminado...   ");
             Console.SetCursorPosition((Width / 2) - 15, (Suelo / 2) + 1);
             Console.Write("Con una puntuación total de " + frutas);
