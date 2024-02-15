@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
+/*
+ * HLC
+ * Ejercicio con el objetivo de realizar el famoso juego Snake
+ * Antonio Gómez Rodrigo
+ * 2DAM Ies Los montecillos
+ * 15/02/2024
+ */
 namespace LaBishaClases
 {
     internal class Program
