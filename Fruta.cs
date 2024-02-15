@@ -75,7 +75,6 @@ namespace LaBishaClases
             
             escenario[x, y] = 2;
             colorFruta = colores[random.Next(colores.Length)];
-            colorFruta = colores[2];
 
             MostrarFruta();
 
